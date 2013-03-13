@@ -10,7 +10,13 @@ module OmniAuth
         :access_token_url   => 'http://api-public.netflix.com/oauth/access_token'
       }
 
-      uid { raw_info['user']['user_id'] }
+      uid do
+        # Help debugging some Netflix lols.
+        raise "raw_info is totally empty, wtf?!" if raw_info.nil?
+        raise "'user' key missing from raw_info. [#{raw_info.keys.join(', ')}] keys are present in raw_info instead" if raw_info['user'].nil?
+
+        raw_info['user']['user_id']
+      end
 
       info do
       {
